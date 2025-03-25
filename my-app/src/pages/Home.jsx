@@ -45,16 +45,19 @@ function Home() {
                 </div>
 
                 {/* Popular Products */}
-                <div className='min-w-7xl py-2 flex flex-row justify-between items-center w-full'>
+                <div className="max-w-xs md:min-w-7xl md:pt-4 md:pb-4 pt-2 pb-4 flex flex-col md:flex-row justify-between">
                     <h2 className="text-xl font-semibold capitalize">Popular products</h2>
-                    <ul className='flex justify-center items-center gap-8 font-medium text-[#0009]'>
-                        {productCategories.map((category, index) => (
-                            <li key={index} className='cursor-pointer hover:text-black'>
-                                {category}
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="w-full md:w-auto overflow-x-auto scrollbar-hide">
+                        <ul className="flex gap-6 font-medium text-[#0009] whitespace-nowrap px-2 no-scrollbar">
+                            {productCategories.map((category, index) => (
+                                <li key={index} className="cursor-pointer hover:text-black text-sm md:text-base px-2 py-1">
+                                    {category}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
+
             </div>
         </>
     );

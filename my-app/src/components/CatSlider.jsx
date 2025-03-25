@@ -42,26 +42,28 @@ function CatSlider() {
                 >
                     <AiOutlineLeft className="text-xl" />
                 </button>
+                <div className=" w-full flex items-center justify-center">
 
-                <div
-                    ref={sliderRef}
-                    className="flex gap-4 overflow-x-scroll scroll-smooth scrollbar-hide py-4 px-4 md:px-0"
-                >
-                    {categories.map((category, index) => (
-                        <div key={index} className="flex flex-col items-center justify-center p-3 cursor-pointer hover:-translate-y-2 transition-transform duration-300">
-                            <div
-                                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full flex items-center justify-center border border-gray-300 shadow"
-                                style={{ backgroundColor: bgColors[index % bgColors.length] }}
-                            >
-                                <img
-                                    src={category.img}
-                                    alt={category.name}
-                                    className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-full p-2"
-                                />
+                    <div
+                        ref={sliderRef}
+                        className="flex  gap-4 overflow-x-scroll scroll-smooth scrollbar-hide py-4 px-4  md:px-0 max-w-6xl"
+                    >
+                        {categories.map((category, index) => (
+                            <div key={index} className="flex flex-col items-center justify-center p-3  cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                                <div
+                                    className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full flex items-center justify-center border border-gray-300 shadow"
+                                    style={{ backgroundColor: bgColors[index % bgColors.length] }}
+                                >
+                                    <img
+                                        src={category.img}
+                                        alt={category.name}
+                                        className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-full p-2"
+                                    />
+                                </div>
+                                <span className="mt-2 font-medium text-xs md:text-sm">{category.name}</span>
                             </div>
-                            <span className="mt-2 font-medium text-xs md:text-sm">{category.name}</span>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
 
                 <button

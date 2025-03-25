@@ -50,7 +50,7 @@ function Home() {
                     <div className="w-full md:w-auto overflow-x-auto scrollbar-hide">
                         <ul className="flex gap-6 font-medium text-[#0009] whitespace-nowrap px-2 no-scrollbar">
                             {productCategories.map((category, index) => (
-                                <li key={index} className="cursor-pointer hover:text-black text-sm md:text-base px-2 py-1">
+                                <li key={index} className="cursor-pointer hover:text-black text-sm md:text-base px-4 py-1">
                                     {category}
                                 </li>
                             ))}

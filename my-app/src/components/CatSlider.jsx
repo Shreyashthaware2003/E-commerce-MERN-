@@ -3,15 +3,14 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
 function CatSlider() {
     const categories = [
-        { name: "Fashion", img: "/fashion.png" },
-        { name: "Electronics", img: "/electronics.png" },
-        { name: "Bags", img: "/home-kitchen.jpg" },
-        { name: "Footwear", img: "/sports.jpg" },
-        { name: "Groceries", img: "/sports.jpg" },
-        { name: "Beauty", img: "/sports.jpg" },
-        { name: "Wellness", img: "/sports.jpg" },
-        { name: "Jewellery", img: "/sports.jpg" },
-        { name: "Mug", img: "/sports.jpg" },
+        { name: "Fashion", img: "/categories/fashion.png" },
+        { name: "Electronics", img: "/categories/electronics.png" },
+        { name: "Bags", img: "/categories/bag.png" },
+        { name: "Footwear", img: "/categories/footwear.png" },
+        { name: "Groceries", img: "/categories/groceries.png" },
+        { name: "Beauty", img: "/categories/beauty.png" },
+        { name: "Wellness", img: "/categories/wellness.png" },
+        { name: "Jewellery", img: "/categories/jewellery.png" },
     ];
 
     const bgColors = ["#ECFFEC", "#FFECEC", "#ECECFF", "#FFF4D6"];
@@ -46,7 +45,7 @@ function CatSlider() {
 
                     <div
                         ref={sliderRef}
-                        className="flex  gap-4 overflow-x-scroll scroll-smooth scrollbar-hide py-4 px-4  md:px-0 max-w-6xl"
+                        className="flex  gap-4 overflow-x-scroll scroll-smooth scrollbar-hide py-4 px-4  md:px-0 max-w-5xl"
                     >
                         {categories.map((category, index) => (
                             <div key={index} className="flex flex-col items-center justify-center p-3  cursor-pointer hover:-translate-y-2 transition-transform duration-300">

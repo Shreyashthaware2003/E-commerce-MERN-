@@ -32,7 +32,7 @@ function Header() {
                 <img src="/logo.svg" alt="logo" className='w-36 cursor-pointer' />
 
                 {/* Navigation Menu for Large Screens */}
-                <nav className='hidden md:flex gap-8 uppercase text-sm list-none'>
+                <nav className='hidden md:flex gap-8 uppercase text-sm list-none font-medium text-gray-700'>
                     <li className='cursor-pointer'>Home</li>
                     <li className='cursor-pointer'>Collection</li>
                     <li className='cursor-pointer'>About</li>

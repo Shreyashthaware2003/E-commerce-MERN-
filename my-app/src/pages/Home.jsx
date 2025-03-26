@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CatSlider from '../components/CatSlider';
+import { RiExchangeFundsFill } from "react-icons/ri";
+import { MdOutlineVerified } from "react-icons/md";
+import { BiSupport } from "react-icons/bi";
 
 function Home() {
     const productCategories = [
@@ -13,6 +16,34 @@ function Home() {
         "Jewellery",
         "Mug",
     ];
+
+    const [activeCategory, setActiveCategory] = useState(productCategories[0]);
+
+    // Dummy products for each category (replace with real data)
+    const products = {
+        Fashion: ["Shirt", "Jeans", "Jacket"],
+        Electronics: ["Laptop", "Smartphone", "Headphones"],
+        Bags: ["Handbag", "Backpack", "Wallet"],
+        Footwear: ["Sneakers", "Sandals", "Boots"],
+        Groceries: ["Rice", "Vegetables", "Fruits"],
+        Beauty: ["Lipstick", "Foundation", "Perfume"],
+        Wellness: ["Yoga Mat", "Supplements", "Skincare"],
+        Jewellery: ["Necklace", "Earrings", "Ring"],
+        Mug: ["Coffee Mug", "Tea Cup", "Travel Mug"],
+    };
+
+    // Dummy image paths for each category (replace with real paths)
+    const productImages = {
+        Fashion: "/products/p2.img",
+        Electronics: "/products/electronics.png",
+        Bags: "/products/bags.png",
+        Footwear: "/products/footwear.png",
+        Groceries: "/products/groceries.png",
+        Beauty: "/products/beauty.png",
+        Wellness: "/products/wellness.png",
+        Jewellery: "/products/jewellery.png",
+        Mug: "/products/mug.png",
+    };
 
     return (
         <>
@@ -41,16 +72,21 @@ function Home() {
                         </div>
                     </div>
 
-                    <CatSlider />
+                    <CatSlider category={activeCategory} />
                 </div>
 
-                {/* Popular Products */}
+                {/* Popular Products Section */}
                 <div className="max-w-xs md:min-w-7xl md:pt-4 md:pb-4 pt-2 pb-4 flex flex-col md:flex-row justify-between">
                     <h2 className="text-xl font-semibold capitalize">Popular products</h2>
                     <div className="w-full md:w-auto overflow-x-auto scrollbar-hide">
-                        <ul className="flex gap-6 font-medium text-[#0009] whitespace-nowrap px-2 no-scrollbar">
+                        <ul className="flex gap-2 font-medium text-[#0009] whitespace-nowrap px-2 no-scrollbar">
                             {productCategories.map((category, index) => (
-                                <li key={index} className="cursor-pointer hover:text-black text-sm md:text-base px-4 py-1">
+                                <li
+                                    key={index}
+                                    onClick={() => setActiveCategory(category)}
+                                    className={`cursor-pointer hover:text-black text-sm md:text-base px-4 py-1 rounded-md ${activeCategory === category ? 'bg-black text-white hover:text-white' : ''
+                                        }`}
+                                >
                                     {category}
                                 </li>
                             ))}
@@ -58,6 +94,52 @@ function Home() {
                     </div>
                 </div>
 
+                {/* Products Display */}
+                <div className="w-full max-w-7xl mt-4 p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {products[activeCategory].map((item, index) => (
+                        <div
+                            key={index}
+                            className="border border-gray-300 p-4 rounded-md shadow-sm flex flex-col items-center"
+                        >
+                            {/* Ensure hover effect is only on the image */}
+                            <div className="w-full overflow-hidden">
+                                <img
+                                    src={productImages[activeCategory]}
+                                    alt={item}
+                                    className="w-full  object-cover transition-transform duration-300 hover:scale-105"
+                                />
+                            </div>
+                            <h3 className="text-lg font-semibold mt-2">{item}</h3>
+                            <p className="text-sm text-gray-600">Category: {activeCategory}</p>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Bottom side */}
+                <div className='min-w-7xl grid md:grid-cols-3  px-4 gap-2 py-10'>
+                    <div className='flex flex-col justify-center items-center p-10 gap-4'>
+                        <RiExchangeFundsFill className='text-6xl' />
+                        <div className='flex flex-col justify-center items-center'>
+                            <span className='font-semibold'>Easy Exchange Policy</span>
+                            <span className='text-gray-400'>We offer hassle free exchange policy</span>
+                        </div>
+                    </div>
+                    <div className='flex flex-col justify-center items-center  p-10 gap-4'>
+                        <MdOutlineVerified className='text-6xl' />
+                        <div className='flex flex-col justify-center items-center'>
+                            <span className='font-semibold'>7 Days Return Policy</span>
+                            <span className='text-gray-400'>We provide 7 days free return policy</span>
+                        </div>
+                    </div>
+                    <div className='flex flex-col justify-center items-center p-10 gap-4'>
+                        <BiSupport className="text-6xl" />
+                        <div className='flex flex-col justify-center items-center'>
+                            <span className='font-semibold'>Best customer support</span>
+                            <span className='text-gray-400'>we provide 24/7 customer support</span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </>
     );

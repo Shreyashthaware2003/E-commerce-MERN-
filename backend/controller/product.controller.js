@@ -3,37 +3,32 @@ import { v2 as cloudinary } from "cloudinary";
 
 // create product
 export const createProduct = async (req, res) => {
-    const { name, description, price, brand, category, countInStock } = req.body;
+    const { name, description, price, category, subCategory, sizes, bestseller } = req.body;
 
     try {
-        // Check for file
         if (!req.files || !req.files.image) {
             return res.status(400).json({ message: "Product image is required" });
         }
 
         const imageFile = req.files.image;
 
-        // Validate image type
         const allowedTypes = ["image/webp", "image/png", "image/jpeg"];
         if (!allowedTypes.includes(imageFile.mimetype)) {
             return res.status(400).json({ message: "Invalid image format. Only JPEG/PNG or WEBP allowed." });
         }
+        console.log("Request body image: ", req.body.image);
 
-        // Upload to Cloudinary
         const cloudinaryRes = await cloudinary.uploader.upload(imageFile.tempFilePath);
 
-        // Create product
         const product = new Product({
             name,
             description,
             price,
-            brand,
             category,
-            countInStock,
-            image: {
-                public_id: cloudinaryRes.public_id,
-                url: cloudinaryRes.secure_url,
-            },
+            subCategory,
+            sizes: Array.isArray(sizes) ? sizes : [sizes], // ensure it's an array
+            bestseller: bestseller === 'true' || bestseller === true, // handle checkbox or boolean
+            image: cloudinaryRes.secure_url,
         });
 
         const savedProduct = await product.save();
@@ -44,6 +39,7 @@ export const createProduct = async (req, res) => {
         res.status(500).json({ message: "Failed to create product", error: error.message });
     }
 };
+
 
 // get all products
 export const getAllProducts = async (req, res) => {
@@ -72,18 +68,20 @@ export const updateProduct = async (req, res) => {
         const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).json({ message: "Product not found" });
 
-        const { name, description, price, brand, category, countInStock } = req.body;
+        const { name, description, price, category, subCategory, sizes, bestseller } = req.body;
+
         if (req.files && req.files.image) {
             const uploadedImage = await cloudinary.uploader.upload(req.files.image.tempFilePath);
-            product.image = { public_id: uploadedImage.public_id, url: uploadedImage.secure_url };
+            product.image = uploadedImage.secure_url;
         }
 
         product.name = name || product.name;
         product.description = description || product.description;
         product.price = price || product.price;
-        product.brand = brand || product.brand;
         product.category = category || product.category;
-        product.countInStock = countInStock || product.countInStock;
+        product.subCategory = subCategory || product.subCategory;
+        product.sizes = sizes ? (Array.isArray(sizes) ? sizes : [sizes]) : product.sizes;
+        product.bestseller = typeof bestseller !== 'undefined' ? (bestseller === 'true' || bestseller === true) : product.bestseller;
 
         const updatedProduct = await product.save();
         res.status(200).json({ message: "Product updated", product: updatedProduct });
@@ -93,18 +91,24 @@ export const updateProduct = async (req, res) => {
     }
 };
 
+
 // Delete a product (Admin Only)
 export const deleteProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: "Product not found" });
+        console.log("Deleting product ID:", req.params.id); // 👈 log ID
 
-        await cloudinary.uploader.destroy(product.image.public_id);
-        await product.deleteOne();
+        const deleted = await Product.findByIdAndDelete(req.params.id);
 
-        res.status(200).json({ message: "Product deleted successfully" });
+        if (!deleted) {
+            console.log("No product found to delete");
+            return res.status(404).json({ message: "Product not found" });
+        }
 
+        console.log("Product deleted successfully");
+        res.status(200).json({ message: "Product deleted" });
     } catch (error) {
-        res.status(500).json({ message: "Failed to delete product", error: error.message });
+        console.error("Delete error:", error); // 👈 show error
+        res.status(500).json({ message: "Server error" });
     }
 };
+

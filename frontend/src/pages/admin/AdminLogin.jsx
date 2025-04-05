@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../../../utils/util';
 import { TbEye, TbEyeClosed } from "react-icons/tb";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 function AdminLogin() {
     const [email, setEmail] = useState('admin@gmail.com');
@@ -11,6 +12,9 @@ function AdminLogin() {
     const [passVisible, setPassVisible] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || '/dashboard'; // fallback to dashboard
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -35,8 +39,8 @@ function AdminLogin() {
             localStorage.setItem('adminToken', data.token);
             localStorage.setItem('adminInfo', JSON.stringify(data));
 
-            alert('Admin login successful ✅');
-            navigate('/dashboard');
+            toast.success('Admin login successful ✅');
+            navigate(from, { replace: true });
         } catch (err) {
             setError(err.message);
         } finally {

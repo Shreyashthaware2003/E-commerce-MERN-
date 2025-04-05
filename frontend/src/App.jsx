@@ -1,9 +1,16 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
+import './app.css'
+
 import Layout from "./components/Layout";
-import Account from "./pages/Account";
 import Home from "./pages/Home";
+import Account from "./pages/Account";
+import Collection from "./pages/Collection";
+import NotFound from "./pages/NotFound";
+
 import AdminLogin from "./pages/admin/adminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProtectedAdminRoute from "./pages/protectedRoute/ProtectedAdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -22,21 +29,39 @@ const router = createBrowserRouter([
         path: "account",
         element: <Account />
       },
+      {
+        path: "collection",
+        element: <Collection />
+      },
     ],
   },
   {
-    // admin routes
-    path: 'admin/login',
+    path: "*",
+    element: <NotFound /> // Catch-all for unmatched child routes
+  },
+  {
+    path: "/admin/login",
     element: <AdminLogin />
   },
   {
-    path: '/dashboard',
-    element: <AdminDashboard />
+    path: "/dashboard",
+    element: <ProtectedAdminRoute />, // Protect this route
+    children: [
+      {
+        index: true,
+        element: <AdminDashboard />
+      }
+    ]
   }
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;

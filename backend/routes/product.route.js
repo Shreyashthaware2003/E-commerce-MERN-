@@ -9,6 +9,6 @@ router.post("/create", adminMiddleware, createProduct)
 router.get("/get", getAllProducts)
 router.get("/:id", getProductById)
 router.put("/update/:id", adminMiddleware, updateProduct)
-router.delete("/delete", deleteProduct)
+router.delete("/delete/:id", deleteProduct)
 
 export default router;

@@ -19,6 +19,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+
 // Middleware
 app.use(cors());
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));

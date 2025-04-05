@@ -26,7 +26,7 @@ function Header() {
     };
 
     return (
-        <header className='w-full bg-white fixed top-0 left-0 z-50 '>
+        <header className='w-full bg-white fixed top-0 left-0 z-50'>
             <div className='max-w-7xl mx-auto flex justify-between items-center p-5'>
                 {/* Logo */}
                 <Link to="/">
@@ -100,7 +100,7 @@ function Header() {
                             className="text-sm focus:outline-none p-2 w-full"
                             placeholder="Search items here..."
                         />
-                        <CiSearch className='cursor-pointer' />
+                        <FiSearch className='cursor-pointer' />
                     </div>
                 </nav>
             )}

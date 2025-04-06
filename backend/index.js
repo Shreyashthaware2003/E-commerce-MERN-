@@ -21,7 +21,10 @@ cloudinary.config({
 
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true                // allow credentials (cookies, auth headers)
+}));
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(express.json());
 

@@ -1,109 +1,177 @@
-import React, { useState, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FiSearch } from "react-icons/fi";
 import { GoPerson } from "react-icons/go";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import axios from 'axios';
 import Select from './select/Select';
+import { BACKEND_URL } from '../../utils/util';
+import { toast } from 'react-hot-toast';
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const timeoutRef = useRef(null);
-    const location = useLocation(); // Get the current route
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const handleMouseEnter = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-        setDropdownOpen(true);
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    setIsLoggedIn(false);
+                    return;
+                }
+
+                const res = await axios.get(`${BACKEND_URL}/user/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                });
+
+                if (res.status === 200) {
+                    setIsLoggedIn(true);
+                }
+            } catch (err) {
+                setIsLoggedIn(false);
+            }
+        };
+
+        checkLoginStatus();
+    }, [location]);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        setDropdownOpen(false);
+        toast.success("User logged out successfully");
+        navigate("/account");
     };
 
-    const handleMouseLeave = () => {
-        timeoutRef.current = setTimeout(() => {
-            setDropdownOpen(false);
-        }, 400);
+    const toggleDropdown = () => setDropdownOpen(prev => !prev);
+    const closeMenuOnNav = () => {
+        setMenuOpen(false);
+        setDropdownOpen(false);
+    };
+
+    const handleSearch = () => {
+        if (searchQuery.trim() !== '') {
+            navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+            setMenuOpen(false); // close mobile nav if open
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') handleSearch();
     };
 
     return (
-        <header className='w-full bg-white fixed top-0 left-0 z-50' style={{fontFamily:"Poppins"}}>
+        <header className='w-full bg-white fixed top-0 left-0 z-50' style={{ fontFamily: "Poppins" }}>
             <div className='max-w-7xl mx-auto flex justify-between items-center p-5'>
-                {/* Logo */}
                 <Link to="/">
                     <img src="/logo.png" alt="logo" className='w-36 cursor-pointer' />
                 </Link>
 
-                {/* Navigation Menu for Large Screens */}
+                {/* Desktop Nav */}
                 <nav className='hidden md:flex items-center justify-center gap-2 uppercase text-sm list-none font-medium text-gray-700 tracking-wide'>
                     {["Home", "Collection", "About", "Contact"].map((item) => (
                         <li key={item}>
                             <Link
                                 to={`/${item.toLowerCase()}`}
-                                className={`cursor-pointer px-3 py-2 transition ${location.pathname === `/${item.toLowerCase()}` ? "border-b-2 font-bold" : "hover:text-gray-900"
-                                    }`}
+                                className={`cursor-pointer px-3 py-2 transition ${location.pathname === `/${item.toLowerCase()}` ? "border-b-2 font-bold" : "hover:text-gray-900"}`}
                             >
                                 {item}
                             </Link>
                         </li>
                     ))}
-                    <Link to={'/admin/login'} className='border border-gray-300 p-2 rounded-full text-xs capitalize '>admin panel</Link>
+                    <Link to={'/admin/login'} className='border border-gray-300 p-2 rounded-full text-xs capitalize'>admin panel</Link>
                 </nav>
 
-                {/* Icons and Search Bar */}
-                <div className='flex items-center gap-4 text-2xl'>
-                    <div className='hidden md:flex items-center rounded-md '>
-                        <FiSearch className='cursor-pointer' />
-                    </div>
+                {/* Icons + Desktop Search */}
+                <div className='flex items-center gap-4 text-2xl relative'>
 
-                    {/* Account Dropdown */}
-                    <div
-                        className='relative'
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                    >
-                        <GoPerson className='cursor-pointer' />
-                        {dropdownOpen && (
-                            <ul className='absolute top-10 right-0 text-sm bg-slate-100 text-gray-500 rounded shadow w-28 py-2 px-2 font-medium space-y-2'>
-                                <li className='cursor-pointer hover:text-black'>Orders</li>
-                                <li className='cursor-pointer hover:text-black'>Logout</li>
-                            </ul>
-                        )}
-                    </div>
+                    {isLoggedIn ? (
+                        <div className='relative flex justify-center items-center'>
+                            <button onClick={toggleDropdown}>
+                                <GoPerson className='cursor-pointer' />
+                            </button>
+                            {dropdownOpen && (
+                                <ul className='absolute top-10 right-0 bg-slate-100 text-gray-700 text-sm shadow rounded w-32 p-2 z-50'>
+                                    <li
+                                        className='cursor-pointer p-2 hover:text-black'
+                                        onClick={() => {
+                                            navigate("/orders");
+                                            setDropdownOpen(false);
+                                        }}
+                                    >
+                                        Orders
+                                    </li>
+                                    <li
+                                        className='cursor-pointer p-2 hover:text-black'
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                    ) : (
+                        <Link to="/account">
+                            <GoPerson className='cursor-pointer' />
+                        </Link>
+                    )}
 
                     <HiOutlineShoppingBag className='cursor-pointer' />
 
-                    {/* Mobile Menu Button */}
-                    <button className='md:hidden' onClick={() => setMenuOpen(!menuOpen)}>
-                        {menuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+                    {/* Mobile Menu Toggle */}
+                    <button className='md:hidden z-50 relative' onClick={() => setMenuOpen(!menuOpen)}>
+                        {menuOpen ? "" : <AiOutlineMenu />}
                     </button>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Background Overlay */}
             {menuOpen && (
-                <nav className='md:hidden flex flex-col items-center gap-4 py-4 bg-white shadow-md list-none'>
+                <div
+                    className="fixed inset-0 bg-opacity-30 z-30"
+                    onClick={() => setMenuOpen(false)}
+                />
+            )}
+
+            {/* Mobile Nav */}
+            <div className={`fixed top-0 right-0 w-full h-screen bg-white shadow-lg list-none transition-transform duration-300 ease-in-out z-40 transform 
+                ${menuOpen ? 'translate-x-0' : 'translate-x-full'} 
+                md:hidden`}
+            >
+                <div className="flex justify-between items-center py-5 px-6">
+                    <h1 className='uppercase font-mono text-4xl'>Menu</h1>
+                    <button onClick={() => setMenuOpen(false)} className="text-2xl">
+                        <AiOutlineClose />
+                    </button>
+                </div>
+                <hr className='w-full' />
+
+                <div className="flex flex-col items-start gap-2 px-6 py-10 font-mono text-2xl">
                     {["Home", "Collection", "About", "Contact"].map((item) => (
                         <li key={item}>
                             <Link
                                 to={`/${item.toLowerCase()}`}
-                                className={`cursor-pointer px-3 py-2 rounded-md transition ${location.pathname === `/${item.toLowerCase()}` ? "text-blue-600 font-bold" : "hover:text-gray-900"
-                                    }`}
+                                onClick={closeMenuOnNav}
+                                className={`cursor-pointer block px-3 py-2 rounded-md transition ${location.pathname === `/${item.toLowerCase()}` ? "text-gray-700" : "hover:text-black"}`}
                             >
                                 {item}
                             </Link>
                         </li>
                     ))}
-                    <div className='flex items-center border border-gray-400 rounded-md px-2 w-full max-w-xs'>
-                        <Select />
-                        <input
-                            type="text"
-                            className="text-sm focus:outline-none p-2 w-full"
-                            placeholder="Search items here..."
-                        />
-                        <FiSearch className='cursor-pointer' />
-                    </div>
-                </nav>
-            )}
+
+                    {/* Mobile Search */}
+                    
+                </div>
+            </div>
         </header>
     );
 }

@@ -8,6 +8,8 @@ import fileUpload from 'express-fileupload';
 import userRoute from './routes/user.route.js';
 import adminRoute from './routes/admin.route.js'
 import productRoute from './routes/product.route.js';
+import cartRoute from './routes/cart.route.js'
+import orderRoute from './routes/order.route.js'
 
 dotenv.config();
 const app = express();
@@ -32,6 +34,8 @@ app.use(express.json());
 app.use('/api/v1/user', userRoute);
 app.use("/api/v1/admin", adminRoute)
 app.use('/api/v1/product', productRoute);
+app.use('/api/v1/cart', cartRoute)
+app.use("/api/v1/order", orderRoute)
 
 // MongoDB Connection
 const PORT = process.env.PORT || 3000;

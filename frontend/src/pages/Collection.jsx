@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../utils/util';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import '../app.css';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
 
 function Collection() {
@@ -102,57 +102,58 @@ function Collection() {
 
             {/* Product Grid */}
             <section className='transition-all duration-500 ease-in-out transform flex flex-col md:py-8 md:px-6 w-full'>
-                {/* Search Bar */}
-                <div className="mb-6 w-full flex justify-end items-center gap-2 relative h-12 overflow-visible">
-
-                    {/* Sliding Search Input */}
-                    <div
-                        className={`flex items-center gap-2 transition-all duration-500 ease-in-out overflow-hidden ${showSearch ? 'translate-x-0 opacity-100 ml-2' : 'translate-x-10 opacity-0 pointer-events-none'
-                            }`}
-                    >
-                        <input
-                            type="text"
-                            placeholder="Search for products..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-[250px] px-4 py-2 border border-gray-300 rounded outline-none transition-all"
-                        />
-                    </div>
-                    {/* Search Button with toggle text */}
-                    <button
-                        onClick={() => {
-                            setShowSearch((prev) => !prev);
-                            if (showSearch) setSearchTerm('');
-                        }}
-                        className="flex items-center justify-center w-28 gap-2 text-white bg-black cursor-pointer px-4 py-2 rounded transition-all"
-                    >
-                        {showSearch ?
-                            (
-                                <>
-                                    <div className='flex justify-center items-center gap-2 font-medium'>
-                                        Close <IoCloseSharp size={22} />
-                                    </div>
-                                </>
-                            )
-                            :
-                            (
-                                <>
-                                    <div className='flex justify-center items-center gap-2 font-medium'>
-                                        Search <IoSearch size={22} />
-                                    </div>
-                                </>
-                            )
-                        }
-                    </button>
-                </div>
-
 
                 {/* Collection Heading */}
-                <div className='flex flex-col md:flex-row items-center gap-2 font-medium text-2xl tracking-wide md:p-4 mb-4'>
-                    <span className='uppercase text-gray-500'>all</span>
-                    <div className='flex justify-center items-center gap-2'>
-                        <span className='uppercase text-gray-700'>collections</span>
-                        <hr className='border-2 w-12' />
+                <div className='flex justify-between items-center'>
+                    <div className='flex flex-col md:flex-row items-center gap-2 font-medium text-2xl tracking-wide md:p-4 mb-4'>
+                        <span className='uppercase text-gray-500'>all</span>
+                        <div className='flex justify-center items-center gap-2'>
+                            <span className='uppercase text-gray-700'>collections</span>
+                            <hr className='border-2 w-12' />
+                        </div>
+                    </div>
+                    {/* Search Bar */}
+                    <div className="mb-6 w-full flex justify-end items-center gap-2 relative h-12 overflow-visible">
+
+                        {/* Sliding Search Input */}
+                        <div
+                            className={`flex items-center gap-2 transition-all duration-500 ease-in-out overflow-hidden ${showSearch ? 'translate-x-0 opacity-100 ml-2' : 'translate-x-10 opacity-0 pointer-events-none'
+                                }`}
+                        >
+                            <input
+                                type="text"
+                                placeholder="Search for products..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-[250px] px-4 py-2 border border-gray-300 outline-none transition-all"
+                            />
+                        </div>
+                        {/* Search Button with toggle text */}
+                        <button
+                            onClick={() => {
+                                setShowSearch((prev) => !prev);
+                                if (showSearch) setSearchTerm('');
+                            }}
+                            className="flex items-center justify-center w-28 gap-2 text-white bg-black cursor-pointer px-4 py-2 transition-all"
+                        >
+                            {showSearch ?
+                                (
+                                    <>
+                                        <div className='flex justify-center items-center gap-2 font-medium'>
+                                            Close <IoCloseSharp size={22} />
+                                        </div>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <div className='flex justify-center items-center gap-2 font-medium'>
+                                            Search <IoSearch size={22} />
+                                        </div>
+                                    </>
+                                )
+                            }
+                        </button>
                     </div>
                 </div>
 
@@ -160,7 +161,7 @@ function Collection() {
                 <div className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                     {filteredProducts.length > 0 ? (
                         filteredProducts.map((product) => (
-                            <div key={product._id} className='w-full flex flex-col items-start md:p-4 cursor-pointer'>
+                            <Link to={`/product/${product._id}`} key={product._id} className='w-full flex flex-col items-start md:p-4 cursor-pointer'>
                                 <div className='bg-white overflow-hidden'>
                                     <div className='overflow-hidden'>
                                         <img
@@ -174,12 +175,13 @@ function Collection() {
                                         <span className='text-gray-700 font-medium text-sm md:text-base'>${product.price}</span>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))
                     ) : (
                         <p className='text-center col-span-full text-gray-500'>No products found. Try adjusting your filters.</p>
                     )}
                 </div>
+
             </section>
         </div>
     );

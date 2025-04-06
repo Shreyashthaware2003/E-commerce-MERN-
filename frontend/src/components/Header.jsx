@@ -8,6 +8,7 @@ import axios from 'axios';
 import Select from './select/Select';
 import { BACKEND_URL } from '../../utils/util';
 import { toast } from 'react-hot-toast';
+import { useCart } from '../cart/CartContext';
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -16,6 +17,7 @@ function Header() {
     const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
+    const { cartCount, fetchCartCount } = useCart();
 
     useEffect(() => {
         const checkLoginStatus = async () => {
@@ -42,6 +44,7 @@ function Header() {
         };
 
         checkLoginStatus();
+        fetchCartCount(); // Update cart count on route change
     }, [location]);
 
     const handleLogout = () => {
@@ -61,7 +64,7 @@ function Header() {
     const handleSearch = () => {
         if (searchQuery.trim() !== '') {
             navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
-            setMenuOpen(false); // close mobile nav if open
+            setMenuOpen(false);
         }
     };
 
@@ -76,7 +79,6 @@ function Header() {
                     <img src="/logo.png" alt="logo" className='w-36 cursor-pointer' />
                 </Link>
 
-                {/* Desktop Nav */}
                 <nav className='hidden md:flex items-center justify-center gap-2 uppercase text-sm list-none font-medium text-gray-700 tracking-wide'>
                     {["Home", "Collection", "About", "Contact"].map((item) => (
                         <li key={item}>
@@ -91,9 +93,7 @@ function Header() {
                     <Link to={'/admin/login'} className='border border-gray-300 p-2 rounded-full text-xs capitalize'>admin panel</Link>
                 </nav>
 
-                {/* Icons + Desktop Search */}
                 <div className='flex items-center gap-4 text-2xl relative'>
-
                     {isLoggedIn ? (
                         <div className='relative flex justify-center items-center'>
                             <button onClick={toggleDropdown}>
@@ -101,19 +101,13 @@ function Header() {
                             </button>
                             {dropdownOpen && (
                                 <ul className='absolute top-10 right-0 bg-slate-100 text-gray-700 text-sm shadow rounded w-32 p-2 z-50'>
-                                    <li
-                                        className='cursor-pointer p-2 hover:text-black'
-                                        onClick={() => {
-                                            navigate("/orders");
-                                            setDropdownOpen(false);
-                                        }}
-                                    >
+                                    <li className='cursor-pointer p-2 hover:text-black' onClick={() => {
+                                        navigate("/orders");
+                                        setDropdownOpen(false);
+                                    }}>
                                         Orders
                                     </li>
-                                    <li
-                                        className='cursor-pointer p-2 hover:text-black'
-                                        onClick={handleLogout}
-                                    >
+                                    <li className='cursor-pointer p-2 hover:text-black' onClick={handleLogout}>
                                         Logout
                                     </li>
                                 </ul>
@@ -125,24 +119,25 @@ function Header() {
                         </Link>
                     )}
 
-                    <HiOutlineShoppingBag className='cursor-pointer' />
+                    <div className="relative">
+                        <Link to="/cart" className="relative block">
+                            <HiOutlineShoppingBag className="text-2xl" />
+                            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] min-w-[16px] h-[16px] px-[4px] flex items-center justify-center rounded-full text-xs">
+                                {cartCount}
+                            </span>
+                        </Link>
+                    </div>
 
-                    {/* Mobile Menu Toggle */}
                     <button className='md:hidden z-50 relative' onClick={() => setMenuOpen(!menuOpen)}>
                         {menuOpen ? "" : <AiOutlineMenu />}
                     </button>
                 </div>
             </div>
 
-            {/* Background Overlay */}
             {menuOpen && (
-                <div
-                    className="fixed inset-0 bg-opacity-30 z-30"
-                    onClick={() => setMenuOpen(false)}
-                />
+                <div className="fixed inset-0 bg-opacity-30 z-30" onClick={() => setMenuOpen(false)} />
             )}
 
-            {/* Mobile Nav */}
             <div className={`fixed top-0 right-0 w-full h-screen bg-white shadow-lg list-none transition-transform duration-300 ease-in-out z-40 transform 
                 ${menuOpen ? 'translate-x-0' : 'translate-x-full'} 
                 md:hidden`}
@@ -167,9 +162,6 @@ function Header() {
                             </Link>
                         </li>
                     ))}
-
-                    {/* Mobile Search */}
-                    
                 </div>
             </div>
         </header>

@@ -11,6 +11,9 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/adminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedAdminRoute from "./pages/protectedRoute/ProtectedAdminRoute";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./cart/Cart";
+import PlaceOrder from "./order/PlaceOrder";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,18 @@ const router = createBrowserRouter([
         path: "collection",
         element: <Collection />
       },
+      {
+        path: "product/:id",
+        element: <ProductDetail />
+      },
+      {
+        path: "cart",
+        element: <Cart />
+      },
+      {
+        path: "place-order",
+        element: <PlaceOrder />
+      }
     ],
   },
   {

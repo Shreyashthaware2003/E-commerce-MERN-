@@ -12,10 +12,21 @@ export const userMiddleware = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1]
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
-      req.user = await User.findById(decoded.id).select('-password')
 
+      // Check if token is expired
+      if (decoded.exp * 1000 < Date.now()) {
+        return res.status(401).json({ message: 'Token expired' })
+      }
+
+      req.user = await User.findById(decoded.id).select('-password')
+      
+      // Token is valid, proceed to next middleware
       next()
     } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Token expired' })
+      }
+
       console.error('Auth error:', error)
       res.status(401).json({ message: 'Not authorized, token failed' })
     }

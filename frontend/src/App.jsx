@@ -7,13 +7,15 @@ import Home from "./pages/Home";
 import Account from "./pages/Account";
 import Collection from "./pages/Collection";
 import NotFound from "./pages/NotFound";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./cart/Cart";
+import PlaceOrder from "./order/PlaceOrder";
+import Order from "./pages/Order";
 
 import AdminLogin from "./pages/admin/adminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedAdminRoute from "./pages/protectedRoute/ProtectedAdminRoute";
-import ProductDetail from "./pages/ProductDetail";
-import Cart from "./cart/Cart";
-import PlaceOrder from "./order/PlaceOrder";
+
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "place-order",
         element: <PlaceOrder />
+      },
+      {
+        path: 'orders',
+        element: <Order />
       }
     ],
   },

@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     firstName: {
         type: String,
         required: true
@@ -48,6 +53,22 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    items: [
+        {
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product", // 👈 make sure this matches your model name
+                required: true,
+            },
+            name: { type: String, required: true },
+            image: { type: String, required: true },
+            price: { type: Number, required: true },
+            size: { type: String, required: true },
+            quantity: { type: Number, required: true },
+        }
+    ],
+
+
 });
 
 export const Order = mongoose.model('Order', orderSchema);

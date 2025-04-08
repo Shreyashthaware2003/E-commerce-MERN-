@@ -97,7 +97,7 @@ function PlaceOrder() {
                     country: '',
                     phone: '',
                 });
-                navigate('/order');
+                navigate('/orders');
             } else {
                 toast.error('Failed to place the order.');
             }

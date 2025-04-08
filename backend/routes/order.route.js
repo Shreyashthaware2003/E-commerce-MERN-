@@ -5,6 +5,6 @@ import { userMiddleware } from '../middleware/user.middleware.js';
 const router = express.Router()
 
 router.post("/place-order", userMiddleware, placeOrder);
-router.post("/get", getAllOrders)
+router.get("/get", userMiddleware, getAllOrders)
 
 export default router

@@ -12,7 +12,7 @@ function ListItems() {
         try {
             const res = await axios.get(`${BACKEND_URL}/product/get`);
             console.log("API Response:", res.data); // 👈 log the response
-            setProducts(res.data || []);
+            setProducts((res.data || []).reverse());
         } catch (error) {
             console.error('Error fetching products:', error);
         } finally {

@@ -9,6 +9,7 @@ import '../app.css';
 
 function Home() {
     const [products, setProducts] = useState([]);
+    const [bestsellers, setBestsellers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -23,7 +24,7 @@ function Home() {
                     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
                 );
 
-                setProducts(sorted.slice(0, 8)); // 👈 Only 8 products
+                setProducts(sorted.slice(0, 8)); // Latest 8 products
                 setTimeout(() => setLoading(false), 1000);
             } catch (err) {
                 console.error('Error fetching products:', err);
@@ -31,7 +32,24 @@ function Home() {
             }
         };
 
+        const fetchBestsellers = async () => {
+            try {
+                const res = await axios.get(`${BACKEND_URL}/product/get`);
+                const fetchedProducts = Array.isArray(res.data.products)
+                    ? res.data.products
+                    : res.data;
+
+                const bestsellers = fetchedProducts.filter(p => p.bestseller === true);
+                const sorted = bestsellers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setBestsellers(sorted.slice(0, 5));
+            } catch (err) {
+                console.error('Error fetching bestsellers:', err);
+            }
+        };
+
+
         fetchProducts();
+        fetchBestsellers();
     }, []);
 
     return (
@@ -62,7 +80,7 @@ function Home() {
                     </div>
                 </div>
 
-                {/* Collection Section */}
+                {/* Latest Collection Section */}
                 <div className='flex flex-col flex-nowrap justify-center items-center'>
                     <div className='flex flex-col md:flex-row justify-center items-center gap-2 font-medium text-2xl md:text-3xl tracking-wide mb-4' style={{ fontFamily: "Poppins" }}>
                         <span className='uppercase text-gray-500'>latest</span>
@@ -107,6 +125,44 @@ function Home() {
                     <Link to={'/collection'} className='bg-black text-white px-4 py-2'>
                         Explore More
                     </Link>
+                </div>
+
+                {/* Best Sellers Section */}
+                <div className='mt-12 flex flex-col items-center w-full'>
+                    <div className='flex flex-col md:flex-row justify-center items-center gap-2 font-medium text-2xl md:text-3xl tracking-wide mb-4' style={{ fontFamily: "Poppins" }}>
+                        <span className='uppercase text-gray-500'>best</span>
+                        <div className='flex justify-center items-center gap-2'>
+                            <span className='uppercase text-gray-700'>sellers</span>
+                            <hr className='border-2 w-12' />
+                        </div>
+                    </div>
+                    <span className='font-medium text-gray-900 text-sm md:text-base text-center mb-4'>
+                        Our most popular picks—loved by customers and made to impress.
+                    </span>
+
+                    <div className='my-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6'>
+                        {bestsellers.length > 0 ? (
+                            bestsellers.map((product) => (
+                                <Link to={`/product/${product._id}`} key={product._id} className='w-full flex flex-col items-start p-4 cursor-pointer'>
+                                    <div className='bg-white overflow-hidden h-[230px] md:h-[300px] w-full'>
+                                        <div className='overflow-hidden'>
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className='w-full object-cover transition-transform duration-300 hover:scale-110'
+                                            />
+                                        </div>
+                                        <div className='py-4'>
+                                            <span className='block text-sm font-medium text-gray-500 mb-1'>{product.name}</span>
+                                            <span className='text-gray-700 font-medium'>${product.price}</span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))
+                        ) : (
+                            <p className='text-center col-span-full text-gray-500'>No bestsellers found.</p>
+                        )}
+                    </div>
                 </div>
             </div>
 

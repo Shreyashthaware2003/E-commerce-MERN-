@@ -292,7 +292,7 @@ function PlaceOrder() {
                         </div>
 
                         <button
-                            className="w-full p-2 bg-blue-600 text-white rounded mt-6"
+                            className="w-fit p-2 bg-black text-white mt-6"
                             onClick={handlePlaceOrder}
                             disabled={!isFormValid}
                         >

@@ -182,6 +182,7 @@ function Header() {
                             </Link>
                         </li>
                     ))}
+                    <Link to={'/admin/login'} className=' p-2 text-2xl capitalize bg-black text-white'>admin panel</Link>
                 </div>
             </div>
         </header>

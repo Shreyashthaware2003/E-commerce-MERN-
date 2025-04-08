@@ -74,7 +74,7 @@ function Collection() {
     }
 
     return (
-        <div className='max-w-7xl mx-auto my-[86px] flex flex-col md:flex-row border-t border-gray-300 px-4 font-poppins'>
+        <div className='max-w-7xl mx-auto my-[95px] flex flex-col md:flex-row border-t border-gray-300 px-4 font-poppins'>
             {/* Mobile Filter Toggle */}
             <div className="md:hidden mt-4">
                 <button

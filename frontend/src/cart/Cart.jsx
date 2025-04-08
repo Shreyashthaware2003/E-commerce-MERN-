@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils/util';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const token = localStorage.getItem('token');
-    const navigate = useNavigate(); // Initialize useNavigate hook
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCart();
@@ -33,7 +33,7 @@ function Cart() {
             await axios.delete(`${BACKEND_URL}/cart/remove/${itemId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            fetchCart(); // refresh cart after deletion
+            fetchCart();
         } catch (err) {
             console.error('Error removing item:', err.response?.data || err.message);
         }
@@ -48,17 +48,16 @@ function Cart() {
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            fetchCart(); // refresh cart after update
+            fetchCart();
         } catch (err) {
             console.error('Error updating quantity:', err.response?.data || err.message);
         }
     };
 
     const handleProceedToCheckout = () => {
-        const total = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0) + 10; // Include any additional fees, like shipping
-        navigate(`/place-order?total=${total.toFixed(2)}`); // Pass the total price as a query parameter
+        const total = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0) + 10;
+        navigate(`/place-order?total=${total.toFixed(2)}`);
     };
-
 
     if (loading) {
         return (
@@ -69,16 +68,20 @@ function Cart() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto mt-20 px-4">
-            <h1 className="text-2xl font-bold mb-6 sticky top-20 bg-white z-10">Your Cart</h1>
+        <div className="max-w-7xl mx-auto mt-[95px]  px-4">
+            <div className="text-lg md:text-2xl font-medium mb-4 uppercase flex flex-nowrap items-center gap-2">
+                <span className='text-gray-500'>my</span>
+                <span className='text-gray-700'>cart</span>
+                <hr className='border-2 w-8 md:w-12' />
+            </div>
             {cartItems.length === 0 ? (
                 <p className="text-gray-600">Your cart is empty.</p>
             ) : (
-                <div className="flex justify-between gap-8">
-                    <div className="space-y-6 overflow-y-auto w-7xl" style={{ maxHeight: "70vh", paddingRight: "4px" }}>
+                <div className="flex flex-col lg:flex-row justify-between gap-2 md:gap-8">
+                    <div className="space-y-6 overflow-y-auto w-full lg:w-3/4 max-h-[30vh] md:max-h-[70vh] pr-[4px]">
                         {cartItems.map((item) => (
-                            <div key={item._id} className="flex items-center justify-between border p-4 rounded-lg">
-                                <div className="flex items-center gap-4">
+                            <div key={item._id} className="flex  sm:flex-row items-center justify-between border p-4 rounded-lg">
+                                <div className="flex items-center gap-4 w-full sm:w-auto">
                                     <img src={item.product.image} alt={item.product.name} className="w-20 h-20 object-cover rounded-md" />
                                     <div>
                                         <h2 className="font-semibold">{item.product.name}</h2>
@@ -94,7 +97,7 @@ function Cart() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col items-end gap-2">
+                                <div className="flex flex-col items-end gap-2 mt-4 sm:mt-0">
                                     <p className="font-bold text-lg">${(item.product.price * item.quantity).toFixed(2)}</p>
                                     <button onClick={() => removeFromCart(item._id)} className="text-red-500 hover:text-red-700 flex items-center gap-1 text-sm cursor-pointer">
                                         <FaTrash /> Remove
@@ -103,7 +106,7 @@ function Cart() {
                             </div>
                         ))}
                     </div>
-                    <div className='w-xl h-fit mt-10 bg-white p-6 rounded-lg shadow-md'>
+                    <div className='w-full lg:w-1/4 h-fit mt-4 md:mt-10 bg-white p-6 rounded-lg shadow-md'>
                         <h2 className="text-xl font-semibold mb-4">Cart Totals</h2>
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-gray-700">Subtotal</span>

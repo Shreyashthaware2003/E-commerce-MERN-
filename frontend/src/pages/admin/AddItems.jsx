@@ -192,12 +192,15 @@ function AddItems() {
 
             {/* Bestseller */}
             <div className='flex items-center gap-2'>
-                <input
-                    type='checkbox'
-                    checked={bestseller}
-                    onChange={(e) => setBestseller(e.target.checked)}
-                />
-                <label className='text-gray-500 font-medium'>Add to Bestseller</label>
+                <label key={bestseller} className='text-gray-500 font-medium flex items-center gap-2'>
+                    <input
+                        id='bestseller'
+                        type='checkbox'
+                        checked={bestseller}
+                        onChange={(e) => setBestseller(e.target.checked)}
+                    />
+                    Add to Bestseller
+                </label>
             </div>
 
             {/* Submit Button */}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FiSearch } from "react-icons/fi";
 import { GoPerson } from "react-icons/go";
@@ -9,6 +9,8 @@ import Select from './select/Select';
 import { BACKEND_URL } from '../../utils/util';
 import { toast } from 'react-hot-toast';
 import { useCart } from '../cart/CartContext';
+import { BsCartCheck } from "react-icons/bs";
+import { CiLogout } from "react-icons/ci";
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +20,7 @@ function Header() {
     const location = useLocation();
     const navigate = useNavigate();
     const { cartCount, fetchCartCount } = useCart();
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         const checkLoginStatus = async () => {
@@ -46,6 +49,23 @@ function Header() {
         checkLoginStatus();
         fetchCartCount(); // Update cart count on route change
     }, [location]);
+
+    // 🔻 Handle click outside dropdown
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+
+        if (dropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownOpen]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -95,20 +115,20 @@ function Header() {
 
                 <div className='flex items-center gap-4 text-2xl relative'>
                     {isLoggedIn ? (
-                        <div className='relative flex justify-center items-center'>
+                        <div className='relative flex justify-center items-center' ref={dropdownRef}>
                             <button onClick={toggleDropdown}>
                                 <GoPerson className='cursor-pointer' />
                             </button>
                             {dropdownOpen && (
                                 <ul className='absolute top-10 right-0 bg-slate-100 text-gray-700 text-sm shadow rounded w-32 p-2 z-50'>
-                                    <li className='cursor-pointer p-2 hover:text-black' onClick={() => {
+                                    <li className='cursor-pointer p-2 hover:text-black flex flex-nowrap items-center gap-2 font-medium' onClick={() => {
                                         navigate("/orders");
                                         setDropdownOpen(false);
                                     }}>
-                                        Orders
+                                        <BsCartCheck className='text-xl' /> Orders
                                     </li>
-                                    <li className='cursor-pointer p-2 hover:text-black' onClick={handleLogout}>
-                                        Logout
+                                    <li className='cursor-pointer p-2 hover:text-red-500 font-medium flex flex-nowrap items-center gap-2' onClick={handleLogout}>
+                                        <CiLogout className='text-xl' />Logout
                                     </li>
                                 </ul>
                             )}

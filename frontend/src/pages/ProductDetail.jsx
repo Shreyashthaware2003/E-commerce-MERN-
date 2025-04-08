@@ -11,14 +11,13 @@ function ProductDetail() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedSize, setSelectedSize] = useState('');
-    const { fetchCartCount } = useCart(); // ✅ destructure fetchCartCount from context
+    const [reviewText, setReviewText] = useState('');
+    const { fetchCartCount } = useCart();
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(`${BACKEND_URL}/product/${id}`);
-                console.log("Fetched Product:", res.data);
-
                 if (res.data.product) {
                     setProduct(res.data.product);
                 } else {
@@ -53,12 +52,40 @@ function ProductDetail() {
                 }
             });
 
-            console.log(res.data.message);
             toast.success("Added to cart!");
-            fetchCartCount(); // ✅ Update cart count immediately
+            fetchCartCount();
         } catch (err) {
             console.error("Error adding to cart:", err.response?.data || err.message);
             toast.error("Failed to add to cart");
+        }
+    };
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+
+        if (!reviewText.trim()) {
+            toast.error("Review cannot be empty.");
+            return;
+        }
+
+        try {
+            const res = await axios.post(`${BACKEND_URL}/product/${id}/review`, {
+                comment: reviewText
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            toast.success("Review submitted!");
+            setReviewText('');
+            setProduct(prev => ({
+                ...prev,
+                reviews: [...prev.reviews, res.data.review]
+            }));
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to submit review");
         }
     };
 
@@ -79,8 +106,8 @@ function ProductDetail() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto my-[86px] flex flex-col absolute left-0 right-0" style={{ fontFamily: "Poppins" }}>
-            <div className='px-4 py-10 flex flex-col md:flex-row gap-10 border-t border-gray-300'>
+        <div className="max-w-7xl mx-auto my-[86px] flex flex-col absolute left-0 right-0 px-4" style={{ fontFamily: "Poppins" }}>
+            <div className='py-10 flex flex-col md:flex-row gap-10 border-t border-gray-300'>
 
                 {/* Product Image */}
                 <div className="flex flex-col md:flex-row justify-center gap-4">
@@ -134,6 +161,44 @@ function ProductDetail() {
                         Add to Cart
                     </button>
                 </div>
+            </div>
+
+            {/* Review Section */}
+            <div className="border-t pt-8 mt-8">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Customer Reviews</h2>
+
+                {/* Display Reviews */}
+                <div className="flex flex-col gap-4">
+                    {product.reviews.length === 0 ? (
+                        <p className="text-gray-600">No reviews yet. Be the first!</p>
+                    ) : (
+                        product.reviews.map((review, index) => (
+                            <div key={index} className="border p-4 rounded bg-gray-50">
+                                <div className="font-medium text-gray-700">{review.name}</div>
+                                <div className="text-gray-600 text-sm mt-1">{review.comment}</div>
+                                <div className="text-xs text-gray-400 mt-2">
+                                    {new Date(review.createdAt).toLocaleString()}
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Review Form */}
+                <form onSubmit={handleReviewSubmit} className="my-6 flex flex-col gap-3">
+                    <textarea
+                        value={reviewText}
+                        onChange={(e) => setReviewText(e.target.value)}
+                        placeholder="Write your review here..."
+                        className="border p-3 rounded resize-none h-24 text-sm"
+                    />
+                    <button
+                        type="submit"
+                        className="w-fit bg-black text-white px-5 py-2 text-sm transition cursor-pointer"
+                    >
+                        Submit Review
+                    </button>
+                </form>
             </div>
         </div>
     );

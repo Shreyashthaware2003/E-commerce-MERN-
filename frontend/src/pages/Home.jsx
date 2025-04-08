@@ -78,13 +78,13 @@ function Home() {
                     {/* Product Grid */}
                     <div className='my-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                         {loading ? (
-                            <div className="col-span-full flex justify-center items-center h-[60vh] w-full">
+                            <div className="col-span-full flex justify-center items-center md:h-[60vh] w-full">
                                 <div className="loader"></div>
                             </div>
                         ) : products.length > 0 ? (
                             products.map((product) => (
-                                <div key={product._id} className='w-full flex flex-col items-start p-4 cursor-pointer'>
-                                    <div className='bg-white overflow-hidden h-[360px] w-full'>
+                                <Link to={`/product/${product._id}`} key={product._id} className='w-full flex flex-col items-start p-4 cursor-pointer'>
+                                    <div className='bg-white overflow-hidden h-[230px] md:h-[360px] w-full'>
                                         <div className='overflow-hidden'>
                                             <img
                                                 src={product.image}
@@ -97,7 +97,7 @@ function Home() {
                                             <span className='text-gray-700 font-medium'>${product.price}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))
                         ) : (
                             <p className='text-center col-span-full text-gray-500'>No products found.</p>

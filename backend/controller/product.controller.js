@@ -112,3 +112,32 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
+
+// product reviews
+export const addReview = async (req, res) => {
+    try {
+        const { comment } = req.body;
+        const productId = req.params.id;
+
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        const newReview = {
+            user: req.user._id,
+            name: req.user.name,
+            comment,
+        };
+
+        product.reviews.push(newReview);
+        await product.save();
+
+        res.status(201).json({ message: "Review added", review: newReview });
+    } catch (err) {
+        console.error("Error adding review:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+

@@ -13,7 +13,7 @@ import Cart from "./cart/Cart";
 import PlaceOrder from "./order/PlaceOrder";
 import Order from "./pages/Order";
 
-import AdminLogin from "./pages/admin/adminLogin";
+import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedAdminRoute from "./pages/protectedRoute/ProtectedAdminRoute";
 

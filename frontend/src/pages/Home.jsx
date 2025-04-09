@@ -5,7 +5,6 @@ import { BiSupport } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils/util';
-import '../app.css';
 
 function Home() {
     const [products, setProducts] = useState([]);

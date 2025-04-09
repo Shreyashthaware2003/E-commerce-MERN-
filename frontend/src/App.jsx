@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
-import './app.css'
+import './App.css'
 
 import Layout from "./components/Layout";
 import Home from "./pages/Home";

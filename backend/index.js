@@ -6,13 +6,25 @@ import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload';
 
 import userRoute from './routes/user.route.js';
-import adminRoute from './routes/admin.route.js'
+import adminRoute from './routes/admin.route.js';
 import productRoute from './routes/product.route.js';
-import cartRoute from './routes/cart.route.js'
-import orderRoute from './routes/order.route.js'
+import cartRoute from './routes/cart.route.js';
+import orderRoute from './routes/order.route.js';
 
 dotenv.config();
+
 const app = express();
+
+// 🌐 CORS setup - allow frontend access (local + production)
+const allowedOrigins = [
+    "http://localhost:5173",                    // local dev
+    "https://e-commerce-mern-mu-nine.vercel.app/"          // ✅ replace with your actual Vercel frontend URL
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
 // 📸 Cloudinary Config
 cloudinary.config({
@@ -21,28 +33,28 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-
-// Middleware
-app.use(cors({
-    origin: "http://localhost:5173", // frontend URL
-    credentials: true                // allow credentials (cookies, auth headers)
-}));
+// 🔧 Middlewares
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(express.json());
 
-// Routes
-app.use('/api/v1/user', userRoute);
-app.use("/api/v1/admin", adminRoute)
-app.use('/api/v1/product', productRoute);
-app.use('/api/v1/cart', cartRoute)
-app.use("/api/v1/order", orderRoute)
+// ✅ Test route
+app.get("/", (req, res) => {
+    res.send("✅ Backend is up and running!");
+});
 
-// MongoDB Connection
+// 🛣️ Routes
+app.use('/api/v1/user', userRoute);
+app.use('/api/v1/admin', adminRoute);
+app.use('/api/v1/product', productRoute);
+app.use('/api/v1/cart', cartRoute);
+app.use('/api/v1/order', orderRoute);
+
+// ⚙️ MongoDB Connection
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
-    .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(MONGO_URI) // removed deprecated options
     .then(() => {
         app.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);

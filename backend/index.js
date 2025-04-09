@@ -17,12 +17,18 @@ const app = express();
 
 // 🌐 CORS setup - allow frontend access (local + production)
 const allowedOrigins = [
-    "http://localhost:5173",                    // local dev
-    "https://e-commerce-mern-mu-nine.vercel.app/"          // ✅ replace with your actual Vercel frontend URL
+    "http://localhost:5173",                      // local dev
+    "https://e-commerce-mern-mu-nine.vercel.app"  // ✅ REMOVE trailing slash here
 ];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true
 }));
 
@@ -54,7 +60,7 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
-    .connect(MONGO_URI) // removed deprecated options
+    .connect(MONGO_URI)
     .then(() => {
         app.listen(PORT, () => {
             console.log(`🚀 Server running on port ${PORT}`);

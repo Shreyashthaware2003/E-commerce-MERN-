@@ -5,7 +5,6 @@ import { GoPerson } from "react-icons/go";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import axios from 'axios';
-import Select from './select/Select';
 import { BACKEND_URL } from '../../utils/util';
 import { toast } from 'react-hot-toast';
 import { useCart } from '../cart/CartContext';
@@ -110,7 +109,7 @@ function Header() {
                             </Link>
                         </li>
                     ))}
-                    <Link to={'/admin/login'} className='border border-gray-300 p-2 rounded-full text-xs capitalize'>admin panel</Link>
+                    <Link to={'/admin/login'} className='border border-gray-300 p-2 rounded-full text-xs capitalize hover:bg-black hover:text-white duration-500'>admin panel</Link>
                 </nav>
 
                 <div className='flex items-center gap-4 text-2xl relative'>

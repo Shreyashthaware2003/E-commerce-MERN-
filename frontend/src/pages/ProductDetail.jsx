@@ -106,7 +106,7 @@ function ProductDetail() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto my-[86px] flex flex-col absolute left-0 right-0 px-4" style={{ fontFamily: "Poppins" }}>
+        <div className="max-w-7xl mx-auto my-[95px] flex flex-col  px-4" style={{ fontFamily: "Poppins" }}>
             <div className='py-10 flex flex-col md:flex-row gap-10 border-t border-gray-300'>
 
                 {/* Product Image */}

@@ -39,7 +39,7 @@ const Order = () => {
                 <hr className="border-2 w-8 md:w-12" />
             </div>
 
-            <div className="max-h-[60vh] md:max-h-[70vh] overflow-y-auto p-4 ">
+            <div className="max-h-[60vh] md:max-h-[58vh] overflow-y-auto p-4 ">
 
                 {orders.length === 0 ? (
                     <p className="text-gray-500">No orders placed yet.</p>

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import './app.css'
 
@@ -6,6 +6,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Account from "./pages/Account";
 import Collection from "./pages/Collection";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./cart/Cart";
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Navigate to="/home" replace />
       },
       {
         path: "home",
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "collection",
         element: <Collection />
+      },
+      {
+        path: "about",
+        element: <About />
       },
       {
         path: "product/:id",

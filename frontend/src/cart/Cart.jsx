@@ -68,7 +68,7 @@ function Cart() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto mt-[95px]  px-4">
+        <div className="max-w-7xl mx-auto my-[95px]  px-4">
             <div className="text-lg md:text-2xl font-medium mb-4 uppercase flex flex-nowrap items-center gap-2">
                 <span className='text-gray-500'>my</span>
                 <span className='text-gray-700'>cart</span>
@@ -87,11 +87,11 @@ function Cart() {
                                         <h2 className="font-semibold">{item.product.name}</h2>
                                         <p className="text-sm text-gray-500">Size: {item.size}</p>
                                         <div className="flex items-center gap-2 mt-1">
-                                            <button onClick={() => updateQuantity(item._id, item.quantity - 1)} className="bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
+                                            <button onClick={() => updateQuantity(item._id, item.quantity - 1)} className="cursor-pointer bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
                                                 <FaMinus size={12} />
                                             </button>
                                             <span>{item.quantity}</span>
-                                            <button onClick={() => updateQuantity(item._id, item.quantity + 1)} className="bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
+                                            <button onClick={() => updateQuantity(item._id, item.quantity + 1)} className="cursor-pointerbg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
                                                 <FaPlus size={12} />
                                             </button>
                                         </div>

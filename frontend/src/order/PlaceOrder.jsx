@@ -260,9 +260,9 @@ function PlaceOrder() {
                                 value="stripe"
                                 checked={selectedPayment === 'stripe'}
                                 onChange={handlePaymentChange}
-                                className="mr-2"
+                                className="mr-2 accent-black cursor-pointer"
                             />
-                            <label htmlFor="stripe" className="text-gray-700">Pay with Stripe</label>
+                            <label htmlFor="stripe" className="text-gray-700 cursor-pointer">Pay with Stripe</label>
                         </div>
 
                         <div>
@@ -273,9 +273,9 @@ function PlaceOrder() {
                                 value="razorpay"
                                 checked={selectedPayment === 'razorpay'}
                                 onChange={handlePaymentChange}
-                                className="mr-2"
+                                className="mr-2 accent-black cursor-pointer"
                             />
-                            <label htmlFor="razorpay" className="text-gray-700">Pay with Razorpay</label>
+                            <label htmlFor="razorpay" className="text-gray-700 cursor-pointer">Pay with Razorpay</label>
                         </div>
 
                         <div>
@@ -286,13 +286,13 @@ function PlaceOrder() {
                                 value="cod"
                                 checked={selectedPayment === 'cod'}
                                 onChange={handlePaymentChange}
-                                className="mr-2"
+                                className="mr-2 accent-black cursor-pointer"
                             />
-                            <label htmlFor="cod" className="text-gray-700">Cash on Delivery</label>
+                            <label htmlFor="cod" className="text-gray-700 cursor-pointer">Cash on Delivery</label>
                         </div>
 
                         <button
-                            className="w-fit p-2 bg-black text-white mt-6"
+                            className="w-fit p-2 bg-black text-white mt-6 cursor-pointer"
                             onClick={handlePlaceOrder}
                             disabled={!isFormValid}
                         >

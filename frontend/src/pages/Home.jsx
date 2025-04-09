@@ -53,7 +53,7 @@ function Home() {
     }, []);
 
     return (
-        <div className='absolute top-20 px-4 md:px-36 flex flex-col justify-center items-center w-full'>
+        <div className='my-[70px] px-4 md:px-36 flex flex-col justify-center items-center w-full'>
             <div className='max-w-7xl'>
 
                 {/* Hero Section */}

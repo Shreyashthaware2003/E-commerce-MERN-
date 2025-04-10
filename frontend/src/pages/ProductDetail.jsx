@@ -41,6 +41,11 @@ function ProductDetail() {
 
         const token = localStorage.getItem("token");
 
+        if (!token) {
+            toast.error("Please login to add items to the cart.");
+            return;
+        }
+
         try {
             const res = await axios.post(`${BACKEND_URL}/cart/add`, {
                 productId: product._id,

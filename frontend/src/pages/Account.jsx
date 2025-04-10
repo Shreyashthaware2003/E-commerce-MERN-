@@ -25,6 +25,7 @@ function Account() {
                 ? `${BACKEND_URL}/user/login`
                 : `${BACKEND_URL}/user/register`;
 
+            console.log(BACKEND_URL);
             const res = await axios.post(endpoint, payload, { withCredentials: true });
 
             if (res.status === 200 || res.status === 201) {

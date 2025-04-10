@@ -55,7 +55,6 @@ function AddItems() {
             toast.success('Product added!');
             console.log(res.data);
 
-            // ✅ Clear form fields after success
             setImage(null);
             setName('');
             setDescription('');
@@ -72,13 +71,10 @@ function AddItems() {
         }
     };
 
-
     return (
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full max-w-5xl  px-4 sm:px-6 '>
             <div className='flex flex-col gap-2'>
                 <label className='text-gray-500 font-medium'>Upload Image</label>
-
-                {/* Hidden file input */}
                 <input
                     type='file'
                     accept='image/*'
@@ -86,8 +82,6 @@ function AddItems() {
                     onChange={(e) => setImage(e.target.files[0])}
                     className='hidden'
                 />
-
-                {/* Custom image upload trigger with preview replacement */}
                 <label htmlFor='image-upload' className='cursor-pointer w-fit'>
                     <img
                         src={image ? URL.createObjectURL(image) : 'upload.png'}
@@ -95,16 +89,11 @@ function AddItems() {
                         className='w-24 h-24 object-cover rounded-md'
                     />
                 </label>
-
-                {/* Optional: File name display */}
                 {image && (
                     <p className='text-sm text-gray-600 mt-1'>{image.name}</p>
                 )}
             </div>
 
-
-
-            {/* Product Name */}
             <div className='flex flex-col gap-2'>
                 <label className='text-gray-500 font-medium'>Product name</label>
                 <input
@@ -112,25 +101,22 @@ function AddItems() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder='Type here'
-                    className='border border-gray-300 p-2 rounded-sm outline-[#c586a5] font-medium w-lg'
+                    className='border border-gray-300 p-2 rounded-sm outline-[#c586a5] font-medium w-full'
                 />
             </div>
 
-            {/* Description */}
             <div className='flex flex-col gap-2'>
                 <label className='text-gray-500 font-medium'>Product description</label>
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder='Write content here'
-                    className='border border-gray-300 p-2 rounded-sm outline-[#c586a5] font-medium w-lg'
+                    className='border border-gray-300 p-2 rounded-sm outline-[#c586a5] font-medium w-full'
                 />
             </div>
 
-            <div className='flex items-center gap-4'>
-
-                {/* Category */}
-                <div className='flex flex-col gap-2 '>
+            <div className='flex flex-col md:flex-row md:items-end gap-4'>
+                <div className='flex flex-col gap-2 w-full md:w-1/3'>
                     <label className='text-gray-500 font-medium'>Product category</label>
                     <select
                         value={category}
@@ -143,8 +129,7 @@ function AddItems() {
                     </select>
                 </div>
 
-                {/* Sub Category */}
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 w-full md:w-1/3'>
                     <label className='text-gray-500 font-medium'>Sub category</label>
                     <select
                         value={subCategory}
@@ -158,21 +143,18 @@ function AddItems() {
                     </select>
                 </div>
 
-
-                {/* Price */}
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 w-full md:w-1/3'>
                     <label className='text-gray-500 font-medium'>Product Price</label>
                     <input
                         type='number'
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                         placeholder='25'
-                        className='border border-gray-400 p-2 rounded-sm w-32'
+                        className='border border-gray-400 p-2 rounded-sm w-full'
                     />
                 </div>
             </div>
 
-            {/* Sizes */}
             <div className='flex flex-col gap-2'>
                 <label className='text-gray-500 font-medium'>Product Sizes</label>
                 <div className='flex gap-4 flex-wrap'>
@@ -190,9 +172,8 @@ function AddItems() {
                 </div>
             </div>
 
-            {/* Bestseller */}
             <div className='flex items-center gap-2'>
-                <label key={bestseller} className='text-gray-500 font-medium flex items-center gap-2'>
+                <label htmlFor='bestseller' className='text-gray-500 font-medium flex items-center gap-2'>
                     <input
                         id='bestseller'
                         type='checkbox'
@@ -203,7 +184,6 @@ function AddItems() {
                 </label>
             </div>
 
-            {/* Submit Button */}
             <button
                 type='submit'
                 className='py-2 px-6 cursor-pointer bg-black text-white font-medium mt-4 disabled:opacity-50 w-fit'

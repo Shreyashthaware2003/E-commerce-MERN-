@@ -98,7 +98,7 @@ function Header() {
                 </Link>
 
                 <nav className='hidden md:flex items-center justify-center gap-2 uppercase text-sm list-none font-medium text-gray-700 tracking-wide'>
-                    {["Home", "Collection", "About", "Contact"].map((item) => (
+                    {["Home", "Collection", "About"].map((item) => (
                         <li key={item}>
                             <Link
                                 to={`/${item.toLowerCase()}`}

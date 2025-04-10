@@ -99,3 +99,47 @@ export const getAllOrders = async (req, res) => {
         });
     }
 };
+
+
+// Controller to fetch all orders for admin
+export const getAllOrdersForAdmin = async (req, res) => {
+    try {
+        const orders = await Order.find({})
+            .populate("user", "name email") // <-- Changed this line
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            message: "All orders fetched successfully",
+            orders,
+        });
+    } catch (error) {
+        console.error("Error fetching all orders:", error);
+        res.status(500).json({
+            message: "Failed to fetch orders for admin",
+            error: error.message,
+        });
+    }
+};
+
+
+// Controller to delete an order (admin only)
+export const deleteOrder = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+
+        const order = await Order.findById(orderId);
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        await Order.findByIdAndDelete(orderId);
+        res.status(200).json({ message: "Order deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting order:", error);
+        res.status(500).json({
+            message: "Failed to delete order",
+            error: error.message,
+        });
+    }
+};
+

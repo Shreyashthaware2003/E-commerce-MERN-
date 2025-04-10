@@ -104,7 +104,7 @@ function Collection() {
 
                 {/* Collection Heading */}
                 <div className='flex justify-between items-center'>
-                    <div className='flex flex-col md:flex-row items-center gap-2 font-medium text-2xl tracking-wide md:p-4 mb-4'>
+                    <div className='flex flex-col md:flex-row md:items-center gap-2 font-medium text-2xl tracking-wide md:p-4 mb-4'>
                         <span className='uppercase text-gray-500'>all</span>
                         <div className='flex justify-center items-center gap-2'>
                             <span className='uppercase text-gray-700'>collections</span>

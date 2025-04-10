@@ -57,14 +57,20 @@ const Order = () => {
                                         {order.paymentMethod}
                                     </span>
                                     <div className="flex items-center gap-1">
-                                        {order.paymentMethod === "razorpay" ? (
-                                            <AiOutlineCheckCircle className="text-green-500 text-lg" />
+                                        {(order.paymentMethod === "razorpay" || order.paymentMethod === "stripe") ? (
+                                            <>
+                                                <AiOutlineCheckCircle className="text-green-500 text-lg" />
+                                                <p>Paid</p>
+                                            </>
                                         ) : (
-                                            <AiOutlineCloseCircle className="text-red-500 text-lg" />
+                                            <>
+                                                <AiOutlineCloseCircle className="text-red-500 text-lg" />
+                                                <p>Cash on Delivery</p>
+                                            </>
                                         )}
-                                        <p>{order.paymentMethod === "razorpay" ? "Paid" : "Cash on Delivery"}</p>
                                     </div>
                                 </div>
+
                             </div>
 
                             {/* Grid layout for Items + Address + Total */}

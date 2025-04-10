@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils/util';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import '../app.css';
 import { Link, useLocation } from 'react-router-dom';
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
 

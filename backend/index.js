@@ -18,7 +18,7 @@ const app = express();
 // 🌐 CORS setup - allow frontend access (local + production)
 const allowedOrigins = [
     "http://localhost:5173",                      // local dev
-    "https://foreverbuy-ivory.vercel.app"  // ✅ REMOVE trailing slash here
+    "https://forever-buy-nine.vercel.app"  // ✅ REMOVE trailing slash here
 ];
 
 app.use(cors({

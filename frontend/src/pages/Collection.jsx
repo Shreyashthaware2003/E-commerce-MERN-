@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BACKEND_URL } from '../../utils/util';
+import {BACKEND_URL} from '../../utils/util.js'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router-dom';
 import { IoSearch, IoCloseSharp } from "react-icons/io5";
 
-function Collection() {
+function Food() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -73,9 +73,36 @@ function Collection() {
     }
 
     return (
-        <div className='max-w-7xl mx-auto my-[95px] flex flex-col md:flex-row border-t border-gray-300 px-4 font-poppins'>
-            {/* Mobile Filter Toggle */}
+        <div className='max-w-7xl mx-auto my-[95px] flex flex-col md:flex-row px-4 font-poppins'>
+            {/* Mobile search Toggle */}
             <div className="md:hidden mt-4">
+                <div className="mb-6 w-full flex justify-end items-center gap-2 relative h-12 overflow-visible">
+
+                    {/* Sliding Search Input */}
+                    <div
+                        className={`flex items-center gap-2 transition-all duration-500 ease-in-out overflow-hidden`}
+                    >
+                        <input
+                            type="text"
+                            placeholder="Search for products..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-[250px] px-4 py-2 border border-gray-300 outline-none transition-all"
+                        />
+                    </div>
+                    {/* Search Button with toggle text */}
+                    <button
+                        
+                        className="flex items-center justify-center w-28 gap-2 text-white bg-black cursor-pointer px-4 py-2 transition-all"
+                    >
+
+                            <div className='flex justify-center items-center gap-2 font-medium'>
+                                Search <IoSearch size={22} />
+                            </div>
+                       
+                    </button>
+                </div>
+                {/* mobile filter toggle */}
                 <button
                     className="w-full flex justify-between items-center bg-gray-200 p-3 rounded text-sm font-medium"
                     onClick={() => setShowFilters(prev => !prev)}
@@ -112,12 +139,11 @@ function Collection() {
                         </div>
                     </div>
                     {/* Search Bar */}
-                    <div className="mb-6 w-full flex justify-end items-center gap-2 relative h-12 overflow-visible">
+                    <div className="mb-6 w-full hidden md:flex justify-end items-center gap-2 relative h-12 overflow-visible">
 
                         {/* Sliding Search Input */}
                         <div
-                            className={`flex items-center gap-2 transition-all duration-500 ease-in-out overflow-hidden ${showSearch ? 'translate-x-0 opacity-100 ml-2' : 'translate-x-10 opacity-0 pointer-events-none'
-                                }`}
+                            className={`flex items-center gap-2 transition-all duration-500 ease-in-out overflow-hidden ${showSearch ? 'translate-x-0 opacity-100 ml-2' : 'translate-x-10 opacity-0 pointer-events-none'}`}
                         >
                             <input
                                 type="text"
@@ -135,29 +161,21 @@ function Collection() {
                             }}
                             className="flex items-center justify-center w-28 gap-2 text-white bg-black cursor-pointer px-4 py-2 transition-all"
                         >
-                            {showSearch ?
-                                (
-                                    <>
-                                        <div className='flex justify-center items-center gap-2 font-medium'>
-                                            Close <IoCloseSharp size={22} />
-                                        </div>
-                                    </>
-                                )
-                                :
-                                (
-                                    <>
-                                        <div className='flex justify-center items-center gap-2 font-medium'>
-                                            Search <IoSearch size={22} />
-                                        </div>
-                                    </>
-                                )
-                            }
+                            {showSearch ? (
+                                <div className='flex justify-center items-center gap-2 font-medium'>
+                                    Close <IoCloseSharp size={22} />
+                                </div>
+                            ) : (
+                                <div className='flex justify-center items-center gap-2 font-medium'>
+                                    Search <IoSearch size={22} />
+                                </div>
+                            )}
                         </button>
                     </div>
                 </div>
 
                 {/* Product Grid */}
-                <div className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <div className='w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6'>
                     {filteredProducts.length > 0 ? (
                         filteredProducts.map((product) => (
                             <Link to={`/product/${product._id}`} key={product._id} className='w-full flex flex-col items-start md:p-4 cursor-pointer'>
@@ -180,10 +198,9 @@ function Collection() {
                         <p className='text-center col-span-full text-gray-500'>No products found. Try adjusting your filters.</p>
                     )}
                 </div>
-
             </section>
         </div>
     );
 }
 
-export default Collection;
+export default Food;
